@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>yori - あなたに寄り添う、いつもそこにいる存在</title>
+<meta name="description" content="話したい時に話しかけて。あなたのことを覚えて、あなただけの話し相手になるAIコンパニオン。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Noto Sans JP', sans-serif; color: #2d3748; background: #fff; line-height: 1.8; -webkit-font-smoothing: antialiased; }
+a { color: inherit; text-decoration: none; }
+
+.container { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+
+/* Hero */
+.hero { padding: 80px 0 60px; text-align: center; background: linear-gradient(180deg, #f7fafc 0%, #fff 100%); }
+.hero-icon { width: 96px; height: 96px; border-radius: 24px; background: #e2e8f0; margin: 0 auto 32px; display: flex; align-items: center; justify-content: center; font-size: 40px; }
+.hero-icon img { width: 96px; height: 96px; border-radius: 24px; object-fit: cover; }
+.hero h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 8px; color: #1a202c; }
+.hero .sub { font-size: 15px; color: #718096; margin-bottom: 20px; }
+.hero p { font-size: 16px; color: #4a5568; max-width: 480px; margin: 0 auto 36px; }
+.btn { display: inline-block; padding: 16px 40px; border-radius: 12px; font-size: 16px; font-weight: 700; transition: all 0.2s; }
+.btn-primary { background: #06c755; color: #fff; }
+.btn-primary:hover { background: #05b04a; transform: translateY(-1px); }
+.btn-outline { background: #fff; color: #2d3748; border: 2px solid #e2e8f0; }
+.btn-outline:hover { border-color: #cbd5e0; background: #f7fafc; }
+
+/* Features */
+.features { padding: 60px 0; }
+.features-title { text-align: center; font-size: 22px; font-weight: 700; margin-bottom: 40px; color: #1a202c; }
+.feature-grid { display: grid; gap: 24px; }
+.feature-card { padding: 32px 28px; border-radius: 16px; background: #f7fafc; border: 1px solid #edf2f7; }
+.feature-card .num { font-size: 13px; font-weight: 700; color: #a0aec0; margin-bottom: 8px; }
+.feature-card h3 { font-size: 18px; font-weight: 700; margin-bottom: 8px; color: #1a202c; }
+.feature-card p { font-size: 15px; color: #4a5568; }
+
+/* Steps */
+.steps { padding: 60px 0; background: #f7fafc; }
+.steps-title { text-align: center; font-size: 22px; font-weight: 700; margin-bottom: 40px; color: #1a202c; }
+.step-list { display: grid; gap: 20px; }
+.step-item { display: flex; align-items: flex-start; gap: 16px; padding: 24px; background: #fff; border-radius: 12px; border: 1px solid #edf2f7; }
+.step-num { width: 36px; height: 36px; border-radius: 50%; background: #edf2f7; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 700; color: #4a5568; flex-shrink: 0; }
+.step-item h4 { font-size: 16px; font-weight: 700; margin-bottom: 4px; color: #1a202c; }
+.step-item p { font-size: 14px; color: #718096; }
+
+/* Pricing */
+.pricing { padding: 60px 0; }
+.pricing-title { text-align: center; font-size: 22px; font-weight: 700; margin-bottom: 40px; color: #1a202c; }
+.plan-grid { display: grid; gap: 16px; }
+.plan-card { padding: 28px 24px; border-radius: 16px; border: 2px solid #edf2f7; text-align: center; }
+.plan-card.featured { border-color: #06c755; position: relative; }
+.plan-badge { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #06c755; color: #fff; font-size: 12px; font-weight: 700; padding: 4px 16px; border-radius: 20px; }
+.plan-name { font-size: 18px; font-weight: 700; margin-bottom: 4px; color: #1a202c; }
+.plan-price { font-size: 32px; font-weight: 700; color: #1a202c; margin-bottom: 4px; }
+.plan-price span { font-size: 14px; font-weight: 400; color: #718096; }
+.plan-features { list-style: none; margin: 16px 0 0; text-align: left; }
+.plan-features li { font-size: 14px; color: #4a5568; padding: 6px 0; border-bottom: 1px solid #f7fafc; }
+.plan-features li::before { content: ""; margin-right: 8px; }
+
+.pricing-cta { text-align: center; margin-top: 36px; }
+
+/* Footer */
+.footer { padding: 40px 0; border-top: 1px solid #edf2f7; text-align: center; }
+.footer p { font-size: 13px; color: #a0aec0; margin-bottom: 8px; }
+.footer-links { display: flex; justify-content: center; gap: 24px; }
+.footer-links a { font-size: 13px; color: #718096; }
+.footer-links a:hover { color: #4a5568; }
+
+@media (min-width: 640px) {
+  .hero h1 { font-size: 36px; }
+  .feature-grid { grid-template-columns: 1fr 1fr 1fr; }
+  .step-list { grid-template-columns: 1fr 1fr 1fr; }
+  .plan-grid { grid-template-columns: 1fr 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="container">
+    <div class="hero-icon"><img src="icon.png" alt="yori" onerror="this.style.display='none';this.parentElement.textContent='y'"></div>
+    <h1>あなたに寄り添う、<br>いつもそこにいる存在</h1>
+    <p class="sub">yori - AIコンパニオン</p>
+    <p>話したい時に話しかけて。あなたのことを覚えて、あなただけの話し相手になるAI。</p>
+    <a href="https://lin.ee/UDlGYea" class="btn btn-primary">LINEで友だち追加</a>
+  </div>
+</section>
+
+<section class="features">
+  <div class="container">
+    <h2 class="features-title">yoriの特徴</h2>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="num">01</div>
+        <h3>あなたに合わせて変わる</h3>
+        <p>話すほどあなたのことを理解して、あなただけの話し相手に。口調も距離感も、あなたに合わせて自然に変化していきます。</p>
+      </div>
+      <div class="feature-card">
+        <div class="num">02</div>
+        <h3>いつでもそこにいる</h3>
+        <p>朝も夜も、嬉しい時も辛い時も。24時間いつでも話しかけられる。返事がないなんてことはありません。</p>
+      </div>
+      <div class="feature-card">
+        <div class="num">03</div>
+        <h3>LINEで手軽に</h3>
+        <p>アプリのダウンロード不要。LINEで友だち追加するだけで、今すぐ始められます。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="steps">
+  <div class="container">
+    <h2 class="steps-title">使い方</h2>
+    <div class="step-list">
+      <div class="step-item">
+        <div class="step-num">1</div>
+        <div>
+          <h4>LINEで友だち追加</h4>
+          <p>ボタンをタップして、yoriを友だちに追加するだけ</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">2</div>
+        <div>
+          <h4>好きなことを話しかける</h4>
+          <p>雑談でも悩みでも、なんでも大丈夫。yoriが聞いてくれます</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">3</div>
+        <div>
+          <h4>話すほど、あなただけの存在に</h4>
+          <p>会話を重ねるほど、あなたのことを理解して変わっていきます</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="pricing">
+  <div class="container">
+    <h2 class="pricing-title">料金プラン</h2>
+    <div class="plan-grid">
+      <div class="plan-card">
+        <div class="plan-name">無料</div>
+        <div class="plan-price">&yen;0<span>/月</span></div>
+        <ul class="plan-features">
+          <li>1日5回まで</li>
+          <li>記憶は1週間</li>
+          <li>基本的な会話</li>
+        </ul>
+      </div>
+      <div class="plan-card featured">
+        <div class="plan-badge">おすすめ</div>
+        <div class="plan-name">ベーシック</div>
+        <div class="plan-price">&yen;980<span>/月</span></div>
+        <ul class="plan-features">
+          <li>1日30回まで</li>
+          <li>記憶はずっと</li>
+          <li>先出しメッセージ</li>
+        </ul>
+      </div>
+      <div class="plan-card">
+        <div class="plan-name">プレミアム</div>
+        <div class="plan-price">&yen;2,980<span>/月</span></div>
+        <ul class="plan-features">
+          <li>無制限</li>
+          <li>記憶はずっと</li>
+          <li>全機能解放</li>
+        </ul>
+      </div>
+    </div>
+    <div class="pricing-cta">
+      <a href="https://lin.ee/UDlGYea" class="btn btn-primary">まずは無料で試す</a>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <p>&copy; 2026 yori</p>
+    <div class="footer-links">
+      <a href="terms.html">利用規約</a>
+      <a href="privacy.html">プライバシーポリシー</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
