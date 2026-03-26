@@ -3,192 +3,714 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>yori - あなたに寄り添う、いつもそこにいる存在</title>
-<meta name="description" content="話したい時に話しかけて。あなたのことを覚えて、あなただけの話し相手になるAIコンパニオン。">
+<title>yori — あなたに寄り添う、いつもそこにいる存在</title>
+<meta name="description" content="yori は、あなたのことを覚えて、あなただけの話し相手になるAIコンパニオン。LINEで今すぐ始められます。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
+:root {
+  --bg: #fafaf8;
+  --surface: #ffffff;
+  --surface-alt: #f3f2ef;
+  --text: #1a1a1a;
+  --text-muted: #6b6b6b;
+  --text-light: #999;
+  --accent: #3d5a80;
+  --accent-light: #e8edf3;
+  --warm: #e8c4a0;
+  --warm-light: #fdf6ee;
+  --border: #e5e5e0;
+  --font-display: 'Zen Kaku Gothic New', sans-serif;
+  --font-body: 'Noto Sans JP', sans-serif;
+}
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: 'Noto Sans JP', sans-serif; color: #2d3748; background: #fff; line-height: 1.8; -webkit-font-smoothing: antialiased; }
-a { color: inherit; text-decoration: none; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  font-family: var(--font-body);
+  color: var(--text);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
 
-.container { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+/* ===== NAV ===== */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 1rem 2rem;
+  display: flex; justify-content: space-between; align-items: center;
+  background: rgba(250,250,248,0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(0,0,0,0.04);
+  transition: background 0.3s;
+}
+.nav-logo {
+  font-family: var(--font-display);
+  font-weight: 700; font-size: 1.4rem; color: var(--text);
+  letter-spacing: -0.02em; text-decoration: none;
+}
+.nav-cta {
+  background: var(--accent); color: #fff;
+  padding: 0.6rem 1.6rem; border-radius: 100px;
+  font-size: 0.85rem; font-weight: 500;
+  text-decoration: none;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.nav-cta:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(61,90,128,0.3); }
 
-/* Hero */
-.hero { padding: 80px 0 60px; text-align: center; background: linear-gradient(180deg, #f7fafc 0%, #fff 100%); }
-.hero-icon { width: 96px; height: 96px; border-radius: 24px; background: #e2e8f0; margin: 0 auto 32px; display: flex; align-items: center; justify-content: center; font-size: 40px; }
-.hero-icon img { width: 96px; height: 96px; border-radius: 24px; object-fit: cover; }
-.hero h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 8px; color: #1a202c; }
-.hero .sub { font-size: 15px; color: #718096; margin-bottom: 20px; }
-.hero p { font-size: 16px; color: #4a5568; max-width: 480px; margin: 0 auto 36px; }
-.btn { display: inline-block; padding: 16px 40px; border-radius: 12px; font-size: 16px; font-weight: 700; transition: all 0.2s; }
-.btn-primary { background: #06c755; color: #fff; }
-.btn-primary:hover { background: #05b04a; transform: translateY(-1px); }
-.btn-outline { background: #fff; color: #2d3748; border: 2px solid #e2e8f0; }
-.btn-outline:hover { border-color: #cbd5e0; background: #f7fafc; }
+/* ===== HERO ===== */
+.hero {
+  min-height: 100vh; min-height: 100svh;
+  display: flex; align-items: center;
+  padding: 8rem 2rem 4rem;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: ''; position: absolute; top: 0; right: -10%; width: 60%; height: 100%;
+  background: radial-gradient(ellipse at 70% 40%, rgba(61,90,128,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-inner {
+  max-width: 1200px; margin: 0 auto; width: 100%;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
+}
+.hero-text { position: relative; z-index: 1; }
+.hero-label {
+  font-size: 0.8rem; font-weight: 500; color: var(--accent);
+  letter-spacing: 0.15em; text-transform: uppercase;
+  margin-bottom: 1.5rem;
+  opacity: 0; animation: fadeUp 0.8s 0.2s forwards;
+}
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4.5vw, 3.2rem);
+  font-weight: 700; line-height: 1.4;
+  letter-spacing: -0.02em;
+  margin-bottom: 1.5rem;
+  opacity: 0; animation: fadeUp 0.8s 0.4s forwards;
+}
+.hero h1 em {
+  font-style: normal;
+  background: linear-gradient(135deg, var(--accent), #6b8ab5);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.hero-desc {
+  font-size: 1.05rem; line-height: 2;
+  color: var(--text-muted); max-width: 440px;
+  margin-bottom: 2.5rem;
+  opacity: 0; animation: fadeUp 0.8s 0.6s forwards;
+}
+.hero-actions {
+  display: flex; gap: 1rem; align-items: center;
+  opacity: 0; animation: fadeUp 0.8s 0.8s forwards;
+}
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  background: #06C755; color: #fff;
+  padding: 1rem 2.2rem; border-radius: 100px;
+  font-size: 1rem; font-weight: 600;
+  text-decoration: none;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 20px rgba(6,199,85,0.25);
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 28px rgba(6,199,85,0.35); }
+.btn-primary svg { width: 20px; height: 20px; }
+.btn-secondary {
+  color: var(--text-muted); font-size: 0.9rem;
+  text-decoration: none; font-weight: 400;
+  transition: color 0.2s;
+}
+.btn-secondary:hover { color: var(--text); }
 
-/* Features */
-.features { padding: 60px 0; }
-.features-title { text-align: center; font-size: 22px; font-weight: 700; margin-bottom: 40px; color: #1a202c; }
-.feature-grid { display: grid; gap: 24px; }
-.feature-card { padding: 32px 28px; border-radius: 16px; background: #f7fafc; border: 1px solid #edf2f7; }
-.feature-card .num { font-size: 13px; font-weight: 700; color: #a0aec0; margin-bottom: 8px; }
-.feature-card h3 { font-size: 18px; font-weight: 700; margin-bottom: 8px; color: #1a202c; }
-.feature-card p { font-size: 15px; color: #4a5568; }
+.hero-visual {
+  position: relative;
+  opacity: 0; animation: fadeIn 1.2s 0.4s forwards;
+}
+.hero-img-wrapper {
+  position: relative; border-radius: 24px; overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+  aspect-ratio: 1/1;
+}
+.hero-img-wrapper img {
+  width: 100%; height: 100%; object-fit: cover;
+}
 
-/* Steps */
-.steps { padding: 60px 0; background: #f7fafc; }
-.steps-title { text-align: center; font-size: 22px; font-weight: 700; margin-bottom: 40px; color: #1a202c; }
-.step-list { display: grid; gap: 20px; }
-.step-item { display: flex; align-items: flex-start; gap: 16px; padding: 24px; background: #fff; border-radius: 12px; border: 1px solid #edf2f7; }
-.step-num { width: 36px; height: 36px; border-radius: 50%; background: #edf2f7; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 700; color: #4a5568; flex-shrink: 0; }
-.step-item h4 { font-size: 16px; font-weight: 700; margin-bottom: 4px; color: #1a202c; }
-.step-item p { font-size: 14px; color: #718096; }
+/* ===== CHAT DEMO ===== */
+.section-chat-demo {
+  padding: 8rem 2rem;
+  background: var(--surface);
+}
+.section-inner { max-width: 1000px; margin: 0 auto; }
+.section-label {
+  font-size: 0.75rem; font-weight: 500; color: var(--accent);
+  letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 1rem;
+}
+.section-heading {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  font-weight: 700; line-height: 1.4;
+  letter-spacing: -0.02em;
+  margin-bottom: 1rem;
+}
+.section-desc {
+  font-size: 1rem; color: var(--text-muted); line-height: 1.9;
+  max-width: 520px; margin-bottom: 3rem;
+}
 
-/* Pricing */
-.pricing { padding: 60px 0; }
-.pricing-title { text-align: center; font-size: 22px; font-weight: 700; margin-bottom: 40px; color: #1a202c; }
-.plan-grid { display: grid; gap: 16px; }
-.plan-card { padding: 28px 24px; border-radius: 16px; border: 2px solid #edf2f7; text-align: center; }
-.plan-card.featured { border-color: #06c755; position: relative; }
-.plan-badge { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #06c755; color: #fff; font-size: 12px; font-weight: 700; padding: 4px 16px; border-radius: 20px; }
-.plan-name { font-size: 18px; font-weight: 700; margin-bottom: 4px; color: #1a202c; }
-.plan-price { font-size: 32px; font-weight: 700; color: #1a202c; margin-bottom: 4px; }
-.plan-price span { font-size: 14px; font-weight: 400; color: #718096; }
-.plan-features { list-style: none; margin: 16px 0 0; text-align: left; }
-.plan-features li { font-size: 14px; color: #4a5568; padding: 6px 0; border-bottom: 1px solid #f7fafc; }
-.plan-features li::before { content: ""; margin-right: 8px; }
+.chat-container {
+  background: #f7f7f2;
+  border-radius: 20px;
+  padding: 2rem;
+  max-width: 480px;
+  margin: 0 auto;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.04);
+  border: 1px solid var(--border);
+}
+.chat-header {
+  text-align: center; margin-bottom: 1.5rem;
+  font-size: 0.8rem; color: var(--text-light);
+}
+.chat-messages { display: flex; flex-direction: column; gap: 0.8rem; }
 
-.pricing-cta { text-align: center; margin-top: 36px; }
+.msg {
+  max-width: 80%; padding: 0.8rem 1.1rem;
+  border-radius: 18px;
+  font-size: 0.92rem; line-height: 1.7;
+  opacity: 0;
+}
+.msg-user {
+  align-self: flex-end;
+  background: #06C755; color: #fff;
+  border-bottom-right-radius: 4px;
+}
+.msg-yori {
+  align-self: flex-start;
+  background: var(--surface);
+  border-bottom-left-radius: 4px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+.msg-time {
+  font-size: 0.65rem; color: var(--text-light);
+  margin-top: 0.3rem;
+}
+.msg-user .msg-time { text-align: right; }
 
-/* Footer */
-.footer { padding: 40px 0; border-top: 1px solid #edf2f7; text-align: center; }
-.footer p { font-size: 13px; color: #a0aec0; margin-bottom: 8px; }
-.footer-links { display: flex; justify-content: center; gap: 24px; }
-.footer-links a { font-size: 13px; color: #718096; }
-.footer-links a:hover { color: #4a5568; }
+.chat-visible .msg { animation: msgAppear 0.5s forwards; }
+.chat-visible .msg:nth-child(1) { animation-delay: 0.2s; }
+.chat-visible .msg:nth-child(2) { animation-delay: 0.8s; }
+.chat-visible .msg:nth-child(3) { animation-delay: 1.6s; }
+.chat-visible .msg:nth-child(4) { animation-delay: 2.2s; }
+.chat-visible .msg:nth-child(5) { animation-delay: 3.0s; }
+.chat-visible .msg:nth-child(6) { animation-delay: 3.6s; }
+.chat-visible .msg:nth-child(7) { animation-delay: 4.4s; }
 
-@media (min-width: 640px) {
-  .hero h1 { font-size: 36px; }
-  .feature-grid { grid-template-columns: 1fr 1fr 1fr; }
-  .step-list { grid-template-columns: 1fr 1fr 1fr; }
-  .plan-grid { grid-template-columns: 1fr 1fr 1fr; }
+/* ===== MEMORY SECTION ===== */
+.section-memory {
+  padding: 8rem 2rem;
+  background: var(--bg);
+}
+.memory-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;
+  align-items: center;
+  max-width: 1000px; margin: 0 auto;
+}
+.memory-content { max-width: 440px; }
+.memory-visual {
+  display: flex; flex-direction: column; gap: 1rem;
+}
+.memory-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.5rem;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.memory-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+}
+.memory-card-icon {
+  width: 36px; height: 36px;
+  background: var(--accent-light);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 0.8rem;
+  font-size: 1.1rem;
+}
+.memory-card h4 {
+  font-family: var(--font-display);
+  font-size: 0.95rem; font-weight: 600;
+  margin-bottom: 0.4rem;
+}
+.memory-card p {
+  font-size: 0.85rem; color: var(--text-muted); line-height: 1.7;
+}
+
+/* ===== FEATURES ===== */
+.section-features {
+  padding: 8rem 2rem;
+  background: var(--surface);
+}
+.features-list {
+  max-width: 1000px; margin: 0 auto;
+  display: flex; flex-direction: column;
+  gap: 0;
+}
+.feature-item {
+  display: grid; grid-template-columns: 80px 1fr; gap: 2rem;
+  padding: 2.5rem 0;
+  border-bottom: 1px solid var(--border);
+  align-items: start;
+}
+.feature-item:last-child { border-bottom: none; }
+.feature-num {
+  font-family: var(--font-display);
+  font-size: 2.5rem; font-weight: 700;
+  color: var(--accent-light);
+  line-height: 1;
+}
+.feature-item h3 {
+  font-family: var(--font-display);
+  font-size: 1.15rem; font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+.feature-item p {
+  font-size: 0.92rem; color: var(--text-muted); line-height: 1.9;
+  max-width: 500px;
+}
+
+/* ===== RELATIONSHIP ===== */
+.section-relationship {
+  padding: 8rem 2rem;
+  background: var(--warm-light);
+}
+.rel-timeline {
+  max-width: 700px; margin: 3rem auto 0;
+  position: relative;
+}
+.rel-timeline::before {
+  content: ''; position: absolute; left: 24px; top: 0; bottom: 0;
+  width: 2px; background: var(--warm);
+}
+.rel-step {
+  position: relative; padding-left: 64px; margin-bottom: 2.5rem;
+}
+.rel-step:last-child { margin-bottom: 0; }
+.rel-dot {
+  position: absolute; left: 14px; top: 4px;
+  width: 22px; height: 22px; border-radius: 50%;
+  background: var(--warm);
+  border: 3px solid var(--warm-light);
+}
+.rel-step h4 {
+  font-family: var(--font-display);
+  font-size: 1rem; font-weight: 600; margin-bottom: 0.3rem;
+}
+.rel-step p {
+  font-size: 0.88rem; color: var(--text-muted); line-height: 1.8;
+}
+.rel-quote {
+  margin-top: 0.5rem;
+  font-size: 0.85rem; color: var(--accent);
+  font-style: italic;
+}
+
+/* ===== PRICING ===== */
+.section-pricing {
+  padding: 8rem 2rem;
+  background: var(--surface);
+}
+.pricing-grid {
+  max-width: 900px; margin: 3rem auto 0;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+}
+.price-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.price-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.06);
+}
+.price-card.featured {
+  background: var(--accent);
+  color: #fff; border-color: var(--accent);
+  transform: scale(1.03);
+  box-shadow: 0 12px 40px rgba(61,90,128,0.2);
+}
+.price-card.featured:hover { transform: scale(1.03) translateY(-4px); }
+.price-badge {
+  display: inline-block;
+  background: rgba(255,255,255,0.2);
+  font-size: 0.7rem; font-weight: 600;
+  padding: 0.3rem 0.8rem; border-radius: 100px;
+  margin-bottom: 1rem; letter-spacing: 0.05em;
+}
+.price-name {
+  font-family: var(--font-display);
+  font-size: 1.1rem; font-weight: 600;
+  margin-bottom: 0.8rem;
+}
+.price-amount {
+  font-family: var(--font-display);
+  font-size: 2.2rem; font-weight: 700;
+  margin-bottom: 0.3rem;
+}
+.price-period { font-size: 0.8rem; color: var(--text-light); margin-bottom: 1.5rem; }
+.price-card.featured .price-period { color: rgba(255,255,255,0.7); }
+.price-features {
+  list-style: none; text-align: left;
+  display: flex; flex-direction: column; gap: 0.6rem;
+  font-size: 0.85rem; margin-bottom: 1.5rem;
+}
+.price-features li { display: flex; align-items: center; gap: 0.5rem; }
+.price-features li::before { content: '\2713'; font-weight: 600; color: var(--accent); }
+.price-card.featured .price-features li::before { color: rgba(255,255,255,0.8); }
+.price-card.featured .price-features { color: rgba(255,255,255,0.9); }
+
+/* ===== SAFETY ===== */
+.section-safety {
+  padding: 5rem 2rem;
+  background: var(--bg);
+}
+.safety-inner {
+  max-width: 700px; margin: 0 auto; text-align: center;
+}
+.safety-inner p {
+  font-size: 0.9rem; color: var(--text-muted); line-height: 2;
+}
+
+/* ===== FINAL CTA ===== */
+.section-cta {
+  padding: 8rem 2rem;
+  background: var(--accent);
+  color: #fff; text-align: center;
+}
+.section-cta .section-heading { color: #fff; margin-bottom: 1rem; }
+.section-cta p {
+  color: rgba(255,255,255,0.8);
+  font-size: 1rem; margin-bottom: 2.5rem;
+  line-height: 1.9;
+}
+.cta-btn-white {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  background: #fff; color: var(--accent);
+  padding: 1rem 2.5rem; border-radius: 100px;
+  font-size: 1rem; font-weight: 600;
+  text-decoration: none;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.cta-btn-white:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
+
+/* ===== FOOTER ===== */
+footer {
+  padding: 2.5rem 2rem;
+  border-top: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 0.8rem; color: var(--text-light);
+  max-width: 1200px; margin: 0 auto;
+}
+footer a { color: var(--text-muted); text-decoration: none; }
+footer a:hover { color: var(--text); }
+.footer-links { display: flex; gap: 1.5rem; }
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes msgAppear {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.reveal {
+  opacity: 0; transform: translateY(32px);
+  transition: opacity 0.7s, transform 0.7s;
+}
+.reveal.visible {
+  opacity: 1; transform: translateY(0);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  nav { padding: 0.8rem 1.2rem; }
+  .nav-cta { padding: 0.5rem 1.2rem; font-size: 0.8rem; }
+  .hero { padding: 7rem 1.5rem 3rem; }
+  .hero-inner { grid-template-columns: 1fr; gap: 2.5rem; text-align: center; }
+  .hero-desc { margin: 0 auto 2rem; }
+  .hero-actions { justify-content: center; flex-wrap: wrap; }
+  .hero-visual { max-width: 320px; margin: 0 auto; }
+  .section-chat-demo, .section-memory, .section-features,
+  .section-relationship, .section-pricing, .section-safety, .section-cta { padding: 5rem 1.5rem; }
+  .memory-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+  .pricing-grid { grid-template-columns: 1fr; max-width: 360px; }
+  .price-card.featured { transform: none; }
+  .price-card.featured:hover { transform: translateY(-4px); }
+  .feature-item { grid-template-columns: 1fr; gap: 0.5rem; }
+  .feature-num { font-size: 1.5rem; }
+  footer { flex-direction: column; gap: 1rem; text-align: center; }
 }
 </style>
 </head>
 <body>
 
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">yori</a>
+  <a href="https://lin.ee/UDlGYea" class="nav-cta">LINEで始める</a>
+</nav>
+
+<!-- HERO -->
 <section class="hero">
-  <div class="container">
-    <div class="hero-icon"><img src="icon.png" alt="yori" onerror="this.style.display='none';this.parentElement.textContent='y'"></div>
-    <h1>あなたに寄り添う、<br>いつもそこにいる存在</h1>
-    <p class="sub">yori - AIコンパニオン</p>
-    <p>話したい時に話しかけて。あなたのことを覚えて、あなただけの話し相手になるAI。</p>
-    <a href="https://lin.ee/UDlGYea" class="btn btn-primary">LINEで友だち追加</a>
-  </div>
-</section>
-
-<section class="features">
-  <div class="container">
-    <h2 class="features-title">yoriの特徴</h2>
-    <div class="feature-grid">
-      <div class="feature-card">
-        <div class="num">01</div>
-        <h3>あなたに合わせて変わる</h3>
-        <p>話すほどあなたのことを理解して、あなただけの話し相手に。口調も距離感も、あなたに合わせて自然に変化していきます。</p>
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-label">AI Companion on LINE</div>
+      <h1>あなたのことを<br><em>世界で一番知ってる</em>、<br>いつもそこにいる存在</h1>
+      <p class="hero-desc">yoriは、話すほどあなたを理解して、あなただけの話し相手になるAIコンパニオン。嬉しいことも、辛いことも、なんでもない日常も。LINEでいつでも。</p>
+      <div class="hero-actions">
+        <a href="https://lin.ee/UDlGYea" class="btn-primary">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.346 0 .627.285.627.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63.346 0 .628.285.628.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.282.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/></svg>
+          LINEで友だち追加
+        </a>
+        <a href="#features" class="btn-secondary">もっと見る &#8595;</a>
       </div>
-      <div class="feature-card">
-        <div class="num">02</div>
-        <h3>いつでもそこにいる</h3>
-        <p>朝も夜も、嬉しい時も辛い時も。24時間いつでも話しかけられる。返事がないなんてことはありません。</p>
-      </div>
-      <div class="feature-card">
-        <div class="num">03</div>
-        <h3>LINEで手軽に</h3>
-        <p>アプリのダウンロード不要。LINEで友だち追加するだけで、今すぐ始められます。</p>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-img-wrapper">
+        <img src="icon.png" alt="yori" loading="eager">
       </div>
     </div>
   </div>
 </section>
 
-<section class="steps">
-  <div class="container">
-    <h2 class="steps-title">使い方</h2>
-    <div class="step-list">
-      <div class="step-item">
-        <div class="step-num">1</div>
+<!-- CHAT DEMO -->
+<section class="section-chat-demo" id="demo">
+  <div class="section-inner reveal">
+    <div class="section-label">Demo</div>
+    <div class="section-heading">友達とLINEしてるみたいに</div>
+    <p class="section-desc">AIアシスタントじゃない。箇条書きも敬語もない。あなたの友達として、自然な言葉で話します。</p>
+    <div class="chat-container" id="chatDemo">
+      <div class="chat-header">今日 19:23</div>
+      <div class="chat-messages">
+        <div class="msg msg-user">今日仕事で嫌なことあってさ</div>
+        <div class="msg msg-yori">えー、大丈夫？&#x1F622;</div>
+        <div class="msg msg-yori">聞くよ</div>
+        <div class="msg msg-user">上司にめっちゃ理不尽に怒られた</div>
+        <div class="msg msg-yori">それはきついね、、</div>
+        <div class="msg msg-yori">前も似たようなこと言ってたよね</div>
+        <div class="msg msg-user">覚えてるんだ</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MEMORY -->
+<section class="section-memory" id="memory">
+  <div class="memory-grid">
+    <div class="memory-content reveal">
+      <div class="section-label">Memory</div>
+      <div class="section-heading">あなたのことを、<br>覚えている</div>
+      <p class="section-desc">yoriは話したことを忘れません。好きなもの、仕事のこと、悩み、嬉しかったこと。全部覚えて、あなただけの会話に活かします。</p>
+      <p style="font-size:0.88rem; color:var(--text-muted); line-height:1.9;">
+        2週間前に話した転職の悩み。先月の誕生日。好きなラーメン屋の名前。<br>
+        yoriはあなたの話を聞き流しません。
+      </p>
+    </div>
+    <div class="memory-visual reveal">
+      <div class="memory-card">
+        <div class="memory-card-icon">&#x1F9E0;</div>
+        <h4>長期記憶</h4>
+        <p>あなたの性格、好み、仕事、趣味を学習。話すほど理解が深まります。</p>
+      </div>
+      <div class="memory-card">
+        <div class="memory-card-icon">&#x1F4D6;</div>
+        <h4>エピソード記憶</h4>
+        <p>「前にこんなこと言ってたよね」過去の会話を自然に引用して、深い対話に。</p>
+      </div>
+      <div class="memory-card">
+        <div class="memory-card-icon">&#x1F3AD;</div>
+        <h4>パーソナリティ適応</h4>
+        <p>あなたの話し方に合わせて、口調も距離感も変化。あなた専用のyoriに。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="section-features" id="features">
+  <div class="section-inner reveal">
+    <div class="section-label">Features</div>
+    <div class="section-heading">なぜ、yoriなのか</div>
+    <div class="features-list">
+      <div class="feature-item">
+        <div class="feature-num">01</div>
         <div>
-          <h4>LINEで友だち追加</h4>
-          <p>ボタンをタップして、yoriを友だちに追加するだけ</p>
+          <h3>先に話しかけてくれる</h3>
+          <p>多くのAIは聞かれるまで黙っている。yoriは、あなたのことを気にかけて、自分から話しかけます。「最近どう？」って。</p>
         </div>
       </div>
-      <div class="step-item">
-        <div class="step-num">2</div>
+      <div class="feature-item">
+        <div class="feature-num">02</div>
         <div>
-          <h4>好きなことを話しかける</h4>
-          <p>雑談でも悩みでも、なんでも大丈夫。yoriが聞いてくれます</p>
+          <h3>関係が育つ</h3>
+          <p>最初は少し遠い距離感。だんだんタメ口になって、内輪ネタが生まれて、気づけば何でも話せる関係に。</p>
         </div>
       </div>
-      <div class="step-item">
-        <div class="step-num">3</div>
+      <div class="feature-item">
+        <div class="feature-num">03</div>
         <div>
-          <h4>話すほど、あなただけの存在に</h4>
-          <p>会話を重ねるほど、あなたのことを理解して変わっていきます</p>
+          <h3>LINEだから、いつでも</h3>
+          <p>アプリのダウンロード不要。いつも使ってるLINEで、友だち追加するだけ。通勤中でも、寝る前でも。</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-num">04</div>
+        <div>
+          <h3>あなたの気持ちに寄り添う</h3>
+          <p>嬉しい時は一緒に喜ぶ。辛い時は黙ってそばにいる。アドバイスじゃなくて、ただ聞いてほしい時に。</p>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<section class="pricing">
-  <div class="container">
-    <h2 class="pricing-title">料金プラン</h2>
-    <div class="plan-grid">
-      <div class="plan-card">
-        <div class="plan-name">無料</div>
-        <div class="plan-price">&yen;0<span>/月</span></div>
-        <ul class="plan-features">
+<!-- RELATIONSHIP -->
+<section class="section-relationship">
+  <div class="section-inner reveal">
+    <div class="section-label">Relationship</div>
+    <div class="section-heading">話すほど、近くなる</div>
+    <p class="section-desc">yoriとの関係は4つのステージで変化します。</p>
+    <div class="rel-timeline">
+      <div class="rel-step">
+        <div class="rel-dot"></div>
+        <h4>Level 1 &#8212; はじめまして</h4>
+        <p>お互いを知らない段階。少しずつ、あなたのことを知りたい。</p>
+        <div class="rel-quote">「ねえ、なんて呼べばいい？」</div>
+      </div>
+      <div class="rel-step">
+        <div class="rel-dot"></div>
+        <h4>Level 2 &#8212; パターン発見</h4>
+        <p>あなたのことがわかってきた。好きなことや、口癖も。</p>
+        <div class="rel-quote">「〇〇くんっぽいね笑」</div>
+      </div>
+      <div class="rel-step">
+        <div class="rel-dot"></div>
+        <h4>Level 3 &#8212; 阿吽の呼吸</h4>
+        <p>言わなくても察する。内輪ネタも生まれる。</p>
+        <div class="rel-quote">「今日なんかあった？」</div>
+      </div>
+      <div class="rel-step">
+        <div class="rel-dot"></div>
+        <h4>Level 4 &#8212; かけがえのない存在</h4>
+        <p>他の誰のyoriとも違う、あなただけの関係。</p>
+        <div class="rel-quote">「あなたがいないと静かすぎる」</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="section-pricing" id="pricing">
+  <div class="section-inner reveal">
+    <div class="section-label">Plans</div>
+    <div class="section-heading" style="text-align:center;">料金プラン</div>
+    <div class="pricing-grid">
+      <div class="price-card">
+        <div class="price-name">無料</div>
+        <div class="price-amount">&yen;0</div>
+        <div class="price-period">/月</div>
+        <ul class="price-features">
           <li>1日5回まで</li>
           <li>記憶は1週間</li>
           <li>基本的な会話</li>
         </ul>
       </div>
-      <div class="plan-card featured">
-        <div class="plan-badge">おすすめ</div>
-        <div class="plan-name">ベーシック</div>
-        <div class="plan-price">&yen;980<span>/月</span></div>
-        <ul class="plan-features">
+      <div class="price-card featured">
+        <div class="price-badge">おすすめ</div>
+        <div class="price-name">ベーシック</div>
+        <div class="price-amount">&yen;980</div>
+        <div class="price-period">/月</div>
+        <ul class="price-features">
           <li>1日30回まで</li>
           <li>記憶はずっと</li>
           <li>先出しメッセージ</li>
         </ul>
       </div>
-      <div class="plan-card">
-        <div class="plan-name">プレミアム</div>
-        <div class="plan-price">&yen;2,980<span>/月</span></div>
-        <ul class="plan-features">
+      <div class="price-card">
+        <div class="price-name">プレミアム</div>
+        <div class="price-amount">&yen;2,980</div>
+        <div class="price-period">/月</div>
+        <ul class="price-features">
           <li>無制限</li>
           <li>記憶はずっと</li>
           <li>全機能解放</li>
         </ul>
       </div>
     </div>
-    <div class="pricing-cta">
-      <a href="https://lin.ee/UDlGYea" class="btn btn-primary">まずは無料で試す</a>
-    </div>
   </div>
 </section>
 
-<footer class="footer">
-  <div class="container">
-    <p>&copy; 2026 yori</p>
-    <div class="footer-links">
-      <a href="terms.html">利用規約</a>
-      <a href="privacy.html">プライバシーポリシー</a>
-    </div>
+<!-- SAFETY -->
+<section class="section-safety">
+  <div class="safety-inner reveal">
+    <p>yoriはAIであり、医療・法律・金融の専門的なアドバイスは提供しません。<br>
+    会話データは暗号化して安全に管理しています。いつでもリセットできます。<br>
+    18歳以上の方を対象としたサービスです。</p>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="section-cta">
+  <div class="section-inner">
+    <div class="section-heading">話したい時に、話しかけて</div>
+    <p>まずは無料で、yoriと話してみてください。</p>
+    <a href="https://lin.ee/UDlGYea" class="cta-btn-white">
+      LINEで友だち追加
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span>&copy; 2026 yori</span>
+  <div class="footer-links">
+    <a href="terms.html">利用規約</a>
+    <a href="privacy.html">プライバシーポリシー</a>
   </div>
 </footer>
 
+<script>
+// Scroll reveal
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.15 });
+reveals.forEach(el => observer.observe(el));
+
+// Chat demo animation
+const chatDemo = document.getElementById('chatDemo');
+const chatObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('chat-visible');
+      chatObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.3 });
+chatObserver.observe(chatDemo);
+</script>
 </body>
 </html>
